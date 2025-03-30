@@ -21,6 +21,7 @@ jobs:
           path: ipxe
       - name: install ipxe build deps into container
         run: |
+          apt update
           apt install -y make gcc binutils perl mtools mkisofs syslinux liblzma-dev isolinux
       - name: build ipxe
         run: |

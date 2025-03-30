@@ -33,7 +33,7 @@ jobs:
           cp ${self_root}/ipxe_config/general.h ${ipxe_root}/src/config/
           cp ${self_root}/ipxe_config/console.h ${ipxe_root}/src/config/
           cd ${ipxe_root}/src
-          make bin-i386-pcbios/ipxe.iso EMBED=config.ipxe -j2
+          make bin-x86_64-efi/ipxe.iso EMBED=config.ipxe -j2
       - name: upload ipxe.efi as artifact
         uses: actions/upload-artifact@v4
         with:

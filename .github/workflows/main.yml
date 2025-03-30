@@ -5,6 +5,7 @@ jobs:
   make-ipxe:
     name: make ipxe
     runs-on: ubuntu-24.04
+    container: docker://ubuntu:latest
     steps:
       - name: checkout self/this
         uses: actions/checkout@v4

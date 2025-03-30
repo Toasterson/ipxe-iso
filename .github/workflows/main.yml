@@ -1,17 +1,18 @@
+# Based on https://rpi4cluster.com/pxe-ipxe/
+
 on: [push] #foo
 jobs:
   make-ipxe:
     name: make ipxe
-    runs-on: ubuntu-20.04
-    container: docker://centos:7.9.2009
+    runs-on: ubuntu-24.04
     steps:
       - name: checkout self/this
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           path: self
       - name: checkout ipxe/ipxe github repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           #ref: v1.20.1 #try to go with latest
@@ -19,9 +20,7 @@ jobs:
           path: ipxe
       - name: install ipxe build deps into container
         run: |
-          yum -y groups mark convert
-          yum -y groupinstall 'Development Tools'
-          yum -y install wget curl git
+          apt install -y make gcc binutils perl mtools mkisofs syslinux liblzma-dev isolinux
       - name: build ipxe
         run: |
           self_root="${GITHUB_WORKSPACE}/self"
@@ -30,10 +29,9 @@ jobs:
           cp ${self_root}/ipxe_config/general.h ${ipxe_root}/src/config/
           cp ${self_root}/ipxe_config/console.h ${ipxe_root}/src/config/
           cd ${ipxe_root}/src/
-          #make bin-x86_64-efi/ipxe.efi EMBED=config.ipxe -j2
-          make bin-x86_64-efi/snponly.efi EMBED=config.ipxe -j2
+          make bin/ipxe.iso EMBED=config.ipxe -j2
       - name: upload ipxe.efi as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: snponly.efi
           path: ${{ github.workspace }}/ipxe/src/bin-x86_64-efi/snponly.efi

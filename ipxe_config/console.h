@@ -34,8 +34,8 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
  *
  */
 
-//#define	CONSOLE_SERIAL		/* Serial port console */
-//#define	CONSOLE_FRAMEBUFFER	/* Graphical framebuffer console */
+#define	CONSOLE_SERIAL		/* Serial port console */
+#define	CONSOLE_FRAMEBUFFER	/* Graphical framebuffer console */
 //#define	CONSOLE_SYSLOG		/* Syslog console */
 //#define	CONSOLE_SYSLOGS		/* Encrypted syslog console */
 //#define	CONSOLE_VMWARE		/* VMware logfile console */
@@ -53,7 +53,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
 //#define	CONSOLE_PC_KBD		/* Direct access to PC keyboard */
 
 /* Keyboard map (available maps in hci/keymap/) */
-#define	KEYBOARD_MAP	cz
+#define	KEYBOARD_MAP	us
 //#define	KEYBOARD_MAP	us
 
 /* Control which syslog() messages are generated.

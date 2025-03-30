@@ -5,7 +5,6 @@ jobs:
   make-ipxe:
     name: make ipxe
     runs-on: ubuntu-24.04
-    container: docker://ubuntu:22.04
     steps:
       - name: checkout self/this
         uses: actions/checkout@v4
@@ -21,8 +20,11 @@ jobs:
           path: ipxe
       - name: install ipxe build deps into container
         run: |
-          apt update
-          apt install -y make gcc binutils perl mtools mkisofs syslinux liblzma-dev isolinux
+          sudo apt update
+          sudo apt install -y -d -o Acquire::Retries=50 \
+                           mtools syslinux isolinux \
+                           libc6-dev-i386 valgrind \
+                           gcc-arm-none-eabi gcc-aarch64-linux-gnu
       - name: build ipxe
         run: |
           self_root="${GITHUB_WORKSPACE}/self"
@@ -31,7 +33,7 @@ jobs:
           cp ${self_root}/ipxe_config/general.h ${ipxe_root}/src/config/
           cp ${self_root}/ipxe_config/console.h ${ipxe_root}/src/config/
           cd ${ipxe_root}/src/
-          make bin/ipxe.iso EMBED=config.ipxe -j2
+          make bin-x86_64-efi/ipxe.iso EMBED=config.ipxe -j2
       - name: upload ipxe.efi as artifact
         uses: actions/upload-artifact@v4
         with:
